@@ -4,12 +4,13 @@ import glob
 import os
 
 def ImportFacilities(STKVersion, filepath):
-    # ImportFacilities attaches to an open instance of STK and imports position data
-    # from an Excel spreadsheet. Inputs include STK whole number version as an
-    # integer and Excel file path. Units are assumed to be degrees and meters with a
-    # header row in the Excel file for ID, LAT, LON, ALT. This function requires the
-    # pandas Python library.
-
+    '''
+    ImportFacilities attaches to an open instance of STK and imports position data from an Excel spreadsheet. 
+    Inputs include STK whole number version as an integer and Excel file path. 
+    Units are assumed to be degrees and meters with a header row in the Excel file for ID, LAT, LON, ALT. 
+    This function requires the pandas Python library.
+    '''
+    
     try:
         # Grab a running instance of STK
         uiApplication = GetActiveObject(f"STK{STKVersion}.Application")
@@ -51,8 +52,7 @@ def ImportFacilities(STKVersion, filepath):
         shortDesc = row["short_description"]
         longDesc = row["long_description"]
 
-        # There cannot be two objects with the same name in STK, so
-        # if there is already a facility with the same name, delete it.
+        # There cannot be two objects with the same name in STK, so if there is already a facility with the same name, delete it.
         if scenario.Children.Contains(STKObjects.eFacility, facName):
             obj = scenario.Children.Item(facName)
             obj.Unload()
@@ -69,7 +69,7 @@ def ImportFacilities(STKVersion, filepath):
         fac.ShortDescription = str(shortDesc)
         fac.LongDescription = str(longDesc)
 
-    print(f"Successfully imported facilities from {filepath}.")
+    print(f"Imported facilities from {filepath}.")
 
 def main():
     files = glob.glob('*.csv')  # Find all csv files
